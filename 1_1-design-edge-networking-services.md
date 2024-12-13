@@ -9,10 +9,31 @@
 * Arhcitecture - Upload orginal content to an S3 bucket, configure the distribution to use the S3 bucket as the origin, a domain name is assigned to the distribution, deploy the distribution to the cloudfront networks which pushes to the distribution configuration to all of the chosen edge locations.
 * If users tries to access data at an edge location and the content is not available it called a "cache missing" and the edge location will check the regional edge location for the content. If content is not in regional cahce a process called "Orgin fetch" is used to obtain the content from the Origin. Then the content is cached is at the regional and local edge location.
 * A cache hit is when the content is available at the edge location right away.
-* Cache hits improve performance by reducing calls to the Origin.
+* **Cache hits improve performance by reducing calls to the Origin.**
 * Integrates with ACM for SSL certificate management
 * **Cloudfront caching is used for downloads only and uploads go direct to origins.**
 * Cache behaviors are configurations within the distributions. Sit in the middle between Origins and distributions.
   * default(*)
-  * Can configure behaviours with path paterrns such as img/* that direct traffic instead of the default action
-  
+  * Can configure behaviors with path patterns such as img/* that direct traffic instead of the default action
+ 
+TTL Invalidations
+* Determines how long content is stored in the edge locations
+* How do remove content before the TTL expires?
+* Content can expire but is not immediately removed and become stale? The edge locations request content from the origin and if the origin sends a 304 not modified the content is then marked as current and sent to viewers from the edge location. Is the TTL updated?
+* If the origin has new content then a 200 ok is sent along with the new data.
+* Default TTL is 24 hours (behaviors) validity period
+* Minimum and Maximum TTL values are set on a per object level
+* **Headers**
+* Cache-control max-age in seconds -
+* Cache-control s-maxage in seconds -
+* Expires - date and time
+* Custom origin these headers must be injected by the application
+* S3 as the origin, the headers can be set using object metadata
+* Cache invalidations
+  * Performed on a distribution
+  * Applies to all edge location and can take a long time
+  * /imgs/car.pic - invalidates a single object
+  * /imgs/* - invalidates all objects under the directory
+  * /* - invalidates all cached objects in the distribution
+  * **Use versioned file names to avoid frequent invalidations and saves money**
+    *  **/imgs/car_v1.jpg, car_v2.jpg**
