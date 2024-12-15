@@ -27,6 +27,7 @@ TTL Invalidations
 * Cache-control max-age in seconds -
 * Cache-control s-maxage in seconds -
 * Expires - date and time
+* AWS recommends using Cache-control max-age over Exprires. If both are configured only Cache-control max-age is used.
 * Custom origin these headers must be injected by the application
 * S3 as the origin, the headers can be set using object metadata
 * Cache invalidations
@@ -37,3 +38,15 @@ TTL Invalidations
   * /* - invalidates all cached objects in the distribution
   * **Use versioned file names to avoid frequent invalidations and saves money**
     *  **/imgs/car_v1.jpg, car_v2.jpg**
+* Cache-Control or Expires headers from the Origin control how long the browser caches the data before sending the request to CloudFront
+
+# ACM
+* Certificates created by ACM can be automatically renewed
+* Certificates can be imported into ACM but you are responsible for renewals
+* ACM certficated can only be deployed to supported services.
+  * List of supported services
+  * CloudFront
+  * ALBs (not EC2)
+* ACM is a regional service
+* Certs created in one region cannot be used by a service in another region.
+* ACM certs for CloudFront should be created in us-east-1
