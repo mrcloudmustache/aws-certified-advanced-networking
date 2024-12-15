@@ -49,3 +49,14 @@
 7. Create CloudFront distibution and paste the Bucket website endpoint URL in the Origin field
 8. Browse to the distribution domain name and verify access to the website.
 
+### Add custom DNS name
+
+1. Create a public hosted zone in Route53 with the custom domain name.
+2. Create NS records in your domain registrar referencing AWS name servers in the public hosted zone.
+3. Rquest a public certificate with the custom domain name from ACM in us-east-1 region.
+4. Create the DNS validation CNAME record in the public hosted zone.
+5. Add the ACM certificate as custom SSL certificate on the distribution.
+6. Add the custom domain name as an Alternate domain name on the distribution.
+7. Create an A alias record and route traffic to the CloudFront distribution.
+8. Edit the default distribution behavior Viewer protocol policy to redirect HTTP to HTTPS
+
