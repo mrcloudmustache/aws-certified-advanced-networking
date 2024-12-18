@@ -40,6 +40,16 @@ TTL Invalidations
     *  **/imgs/car_v1.jpg, car_v2.jpg**
 * Cache-Control or Expires headers from the Origin control how long the browser caches the data before sending the request to CloudFront
 
+# CloudFront SSL
+* **SSL supported by default with *cloudfront.net cert.**
+* Must add a custom SSL certificate when using custom domains even if you don't use HTTPS.
+* **SSL certificates between the Viewer and CloudFront and between CloudFront and the Origin(EC2 mainly) must be valid *public* and intermediate certificates.**
+    * ALB can use publicly signed certificates. ACM or external generated cert.
+    * The DNS name on the Origin must match the distriution name
+* Use a dedicated IP on the distribution to support older (NON SNI) browsers and new browsers.
+    * This cost extra.
+* Cannot use self signed certificates Public trusted signed certificates only.
+
 # ACM
 * Certificates created by ACM can be automatically renewed
 * Certificates can be imported into ACM but you are responsible for renewals
@@ -49,4 +59,4 @@ TTL Invalidations
   * ALBs (not EC2)
 * ACM is a regional service
 * Certs created in one region cannot be used by a service in another region.
-* ACM certs for CloudFront should be created in us-east-1
+* **ACM certs for CloudFront should be created in us-east-1**
