@@ -40,7 +40,7 @@ TTL Invalidations
     *  **/imgs/car_v1.jpg, car_v2.jpg**
 * Cache-Control or Expires headers from the Origin control how long the browser caches the data before sending the request to CloudFront
 
-# CloudFront SSL
+## SSL
 * **SSL supported by default with *cloudfront.net cert.**
 * Must add a custom SSL certificate when using custom domains even if you don't use HTTPS.
 * **SSL certificates between the Viewer and CloudFront and between CloudFront and the Origin(EC2 mainly) must be valid *public* and intermediate certificates.**
@@ -50,7 +50,7 @@ TTL Invalidations
     * This cost extra.
 * Cannot use self signed certificates Public trusted signed certificates only.
 
-# ACM
+## ACM
 * Certificates created by ACM can be automatically renewed
 * Certificates can be imported into ACM but you are responsible for renewals
 * ACM certficated can only be deployed to supported services.
@@ -60,3 +60,11 @@ TTL Invalidations
 * ACM is a regional service
 * Certs created in one region cannot be used by a service in another region.
 * **ACM certs for CloudFront should be created in us-east-1**
+
+## OAI 
+* Create an OAI identity and assign it to the distribution
+* The OAI can be used in bucket policies
+* Only used for S3 origins not static websites
+
+## Secure custom origins
+* Require custom headers or filter CloudFront edges IP addresses with a firewall
