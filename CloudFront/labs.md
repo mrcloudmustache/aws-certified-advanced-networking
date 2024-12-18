@@ -60,3 +60,36 @@
 7. Create an A alias record and route traffic to the CloudFront distribution.
 8. Edit the default distribution behavior Viewer protocol policy to redirect HTTP to HTTPS
 
+### Secure S3 with OAC policy
+
+1. Create a new distribution and choose an S3 bucket as the origin (cannot have static website enabled).
+2. Create new OAC policy in the distribution.
+3. Apply the OAC policy to the S3 bucket policy
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "cloudfront.amazonaws.com"
+            },
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::mcmcloudfrontbasicbucket/*",
+                "arn:aws:s3:::mcmcloudfrontbasicbucket"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "AWS:SourceArn": "arn:aws:cloudfront::381492246051:distribution/EOGNO2UTATEA1"
+                }
+            }
+        }
+    ]
+}
+```
+4. Verify direct access to the bucket is denied.
+5. Verify you can access the website with the distribution URL
